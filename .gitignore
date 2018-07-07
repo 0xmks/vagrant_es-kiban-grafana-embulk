@@ -1,0 +1,48 @@
+## ignore mac files
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+# Icon must end with two \r
+Icon
+# Thumbnails
+._*
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+.retry
+
+# Vagrant
+.vagrant/
+log/
+user-data
+config.rb
+config.ign
+config.ign.merged
+*.vmdk
+*.img
+*.retry
+*.box
+!.gitkeep
+
+# old dump
+/docker/dump/old/*
+
+# mysql_data
+/docker/mysql/data/*
+!/docker/mysql/data/.gitkeep
+
+# html
+/public_html/*
+!/public_html/.gitkeep

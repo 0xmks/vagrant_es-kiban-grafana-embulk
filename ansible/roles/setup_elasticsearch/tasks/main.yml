@@ -1,0 +1,63 @@
+---
+# yum module: http://docs.ansible.com/ansible/latest/yum_module.html
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/rpm.html
+
+# yum openjdk インストール
+- name: openjdk install
+  become: true
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - java-1.8.0-openjdk.x86_64
+    - java-1.8.0-openjdk-devel.x86_64
+
+# Installing from the RPM repository
+
+- name: Download and install the public signing key
+  become: true
+  rpm_key:
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+# elasticsearch.repo コピー
+- name: copy elasticsearch.repo
+  become: true
+  copy: 
+    src : files/elasticsearch.repo
+    dest: /etc/yum.repos.d/elasticsearch.repo
+
+# yum インストール
+- name: elasticsearch install
+  become: true
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - elasticsearch
+
+# elasticsearch.yml コピー
+- name: copy elasticsearch.yml
+  become: true
+  copy: 
+    src : files/elasticsearch.yml
+    dest: /etc/elasticsearch/elasticsearch.yml
+  notify:
+    - restart elasticsearch
+
+# jvm.options コピー
+- name: copy jvm.options
+  become: true
+  copy: 
+    src : files/jvm.options
+    dest: /etc/elasticsearch/jvm.options
+  notify:
+    - restart elasticsearch
+
+# systemd enable
+- name: elasticsearch enable
+  become: true
+  systemd:
+    name: elasticsearch.service
+    enabled: yes
+    state: started
+

@@ -1,0 +1,9 @@
+
+# 再起動
+- name: restart kibana
+  become: true
+  ignore_errors: yes
+  systemd:
+    name: kibana.service
+    state: restarted
+

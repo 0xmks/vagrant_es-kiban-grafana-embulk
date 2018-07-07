@@ -1,0 +1,29 @@
+---
+# selinux 対策
+- name: Install libselinux-python
+  become: true
+  yum:
+    name: libselinux-python
+    state: latest
+
+# git
+- name: Install git
+  become: true
+  yum:
+    name: git
+    state: latest
+
+# mailx
+- name: Install mailx
+  become: true
+  yum:
+    name: mailx
+    state: latest
+
+# timezone JST
+- name: set timezone to Asia/Tokyo
+  become: true
+  timezone:
+    name: Asia/Tokyo
+
+

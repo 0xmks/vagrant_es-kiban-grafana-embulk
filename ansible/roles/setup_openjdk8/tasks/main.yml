@@ -1,0 +1,13 @@
+---
+# yum module: http://docs.ansible.com/ansible/latest/yum_module.html
+
+# yum openjdk インストール
+- name: openjdk install
+  become: true
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - java-1.8.0-openjdk.x86_64
+    - java-1.8.0-openjdk-devel.x86_64
+

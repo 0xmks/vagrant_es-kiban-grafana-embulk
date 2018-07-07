@@ -1,0 +1,10 @@
+
+# 再起動
+- name: restart elasticsearch
+  become: true
+  ignore_errors: yes
+  systemd:
+    name: elasticsearch.service
+    enabled: yes
+    state: restarted
+

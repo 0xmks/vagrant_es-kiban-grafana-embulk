@@ -1,0 +1,31 @@
+# https://github.com/embulk/embulk
+
+# yum openjdk8 インストール
+- name: openjdk install
+  become: true
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - java-1.8.0-openjdk.x86_64
+    - java-1.8.0-openjdk-devel.x86_64
+
+# embulk install
+- name: download embulk
+  become: true
+  get_url: 
+    url: https://dl.embulk.org/embulk-latest.jar
+    dest: /usr/local/bin/embulk
+
+- name: chmod exec
+  become: true
+  file: dest="/usr/local/bin/embulk" mode=a+x
+
+- name: install embulk plugin
+  become: true
+  shell: /usr/local/bin/embulk gem install embulk-output-elasticsearch embulk-filter-eval
+  register: result
+
+- name: debug result
+  debug: var=result.stdout_lines
+

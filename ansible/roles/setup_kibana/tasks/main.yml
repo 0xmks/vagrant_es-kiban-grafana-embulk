@@ -1,0 +1,52 @@
+---
+# https://www.elastic.co/guide/en/kibana/current/rpm.html
+
+# yum openjdk インストール
+- name: openjdk install
+  become: true
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - java-1.8.0-openjdk.x86_64
+    - java-1.8.0-openjdk-devel.x86_64
+
+# Installing from the RPM repository
+
+- name: Download and install the public signing key
+  become: true
+  rpm_key:
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+# elasticsearch.repo コピー
+- name: copy kibana.repo
+  become: true
+  copy: 
+    src : files/kibana.repo
+    dest: /etc/yum.repos.d/kiban.repo
+
+- name: kibana install
+  become: true
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - kibana
+
+# kibana.yml コピー
+- name: copy kibana.yml
+  become: true
+  copy: 
+    src : files/kibana.yml
+    dest: /etc/kibana/kibana.yml
+  notify:
+    - restart kibana
+
+# systemd enable
+- name: kibana enable
+  become: true
+  systemd:
+    name: kibana.service
+    enabled: yes
+    state: started
+

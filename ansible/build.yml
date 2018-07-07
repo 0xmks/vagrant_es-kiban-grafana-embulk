@@ -1,0 +1,10 @@
+---
+- hosts: all
+  roles:
+    - common
+    - setup_openjdk8
+    - setup_elasticsearch
+    - setup_kibana
+    - setup_grafana
+    - setup_embulk
+    

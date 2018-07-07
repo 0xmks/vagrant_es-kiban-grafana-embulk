@@ -1,0 +1,44 @@
+---
+# https://www.elastic.co/guide/en/kibana/current/rpm.html
+
+# yum openjdk インストール
+- name: openjdk install
+  become: true
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - java-1.8.0-openjdk.x86_64
+    - java-1.8.0-openjdk-devel.x86_64
+
+# Installing from the RPM repository
+
+- name: Download and install the public signing key
+  become: true
+  rpm_key:
+    key: https://grafanarel.s3.amazonaws.com/RPM-GPG-KEY-grafana
+
+# grafana.repo コピー
+- name: copy grafana.repo
+  become: true
+  copy: 
+    src : files/grafana.repo
+    dest: /etc/yum.repos.d/grafana.repo
+
+# yum インストール
+- name: grafana install
+  become: true
+  yum:
+    name={{ item }}
+    state=present
+  with_items:
+    - grafana
+
+# systemd enable
+- name: grafana enable
+  become: true
+  systemd:
+    name: grafana-server.service
+    enabled: yes
+    state: started
+
